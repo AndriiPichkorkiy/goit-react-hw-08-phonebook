@@ -1,11 +1,6 @@
 const { default: styled } = require('styled-components');
 
 const Container = styled.div`
-  /* position: absolute; */
-  /* transform: translate(-50%, 0);
-  top: 0;
-  left: 50%; */
-
   display: flex;
   justify-content: space-around;
   padding: 0 2rem;
