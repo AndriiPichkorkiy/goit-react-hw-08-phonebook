@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { nanoid } from 'nanoid'
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
@@ -7,29 +7,37 @@ import Container from './Container.js';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+let isFirstTimeAppStarted = true;
 
-  LS_KEY = 'contacts'
+export function App() {
+  const [getContacts, setContacts] = useState([]);
+  const [getFilter, setFilter] = useState('')
+
+  const LS_KEY = 'contacts';
 
   //method for component FIlter
-  filterChange = (event) => {
+  const filterChange = (event) => {
     const { name, value } = event.currentTarget
-    this.setState({
-      [name]: value,
-    })
+    setFilter(value);
   }
 
-  componentDidMount() {
-    this.setState({ contacts: this.getDataFromLS() })
-  }
+  //component did mount
+  useEffect(() => {
+    setContacts(getDataFromLS())
+  }, [])
+
+
+  //update LS
+  useEffect(() => {
+    if (isFirstTimeAppStarted) { isFirstTimeAppStarted = false; return };
+
+    updateLS(getContacts);
+  }, [getContacts])
 
   //method for component ContactList
-  getFiltredList = () => {
-    const { contacts, filter } = this.state
+  const getFiltredList = () => {
+    const contacts = getContacts;
+    const filter = getFilter;
 
     if (filter) {
       const subString = filter.toLocaleUpperCase();
@@ -41,19 +49,19 @@ export class App extends Component {
   }
 
   //general method
-  showMessage = (msg) => {
+  const showMessage = (msg) => {
     Notify.warning(msg)
   }
 
   //check and add new contact
-  onAddContact = (newContact) => {
-    const { contacts } = this.state
+  const onAddContact = useCallback((newContact) => {
+    const contacts = getContacts;
 
     //check contacts 
     const isExist = Object.keys(newContact).find(key => {
       const subString = newContact[key].toLocaleUpperCase();
       const contact = contacts.find(el => el[key].toLocaleUpperCase().includes(subString));
-      if (contact) return !this.showMessage(`${contact[key]} is already in contacts`);
+      if (contact) return !showMessage(`${contact[key]} is already in contacts`);
       else return false
     })
 
@@ -61,48 +69,39 @@ export class App extends Component {
 
     //continue
     newContact.id = nanoid(10)
-    this.setState(preState => {
-      const contacts = [...preState.contacts, newContact]
-      this.updateLS(contacts)
-      return { contacts }
-    })
-  }
+    setContacts(preContacts => [...preContacts, newContact]);
+
+    updateLS(getContacts);
+  }, [])
 
   //remove contact by id, method for component ContactList
-  removeContact = (id) => {
-    const { contacts } = this.state
-    const updatedContacts = contacts.filter(contact => contact.id !== id);
-
-    this.updateLS(updatedContacts)
-
-    this.setState({
-      contacts: updatedContacts,
-    })
-  }
+  const onRemoveContact = useCallback((id) => {
+    setContacts(preContacts => preContacts.filter(contact => contact.id !== id));
+    updateLS(getContacts);
+  }, [setContacts])
 
   //use it when add or delete contact
-  updateLS = (contacts) => {
-    localStorage.setItem(this.LS_KEY, JSON.stringify(contacts))
+  const updateLS = (contacts) => {
+    localStorage.setItem(LS_KEY, JSON.stringify(contacts))
   }
 
   //us it only for componentDidMount
-  getDataFromLS() {
-    return JSON.parse(localStorage.getItem(this.LS_KEY) || '[]')
+  function getDataFromLS() {
+    return JSON.parse(localStorage.getItem(LS_KEY) || '[]')
   }
 
-  render() {
-    const listToRender = this.getFiltredList();
-
-    return (
-      <Container>
-        <div>
-          <ContactForm onAddContact={this.onAddContact} showMessage={this.showMessage} />
-        </div>
-        <div>
-          <Filter value={this.state.filter} onFilterChange={this.filterChange} />
-          <ContactList listToRender={listToRender} onRemoveContact={this.removeContact} />
-        </div>
-      </Container>
-    );
-  }
+  // render() {
+  const listToRender = getFiltredList();
+  return (
+    <Container>
+      <div>
+        <ContactForm onAddContact={onAddContact} showMessage={showMessage} />
+      </div>
+      <div>
+        <Filter value={getFilter} onFilterChange={filterChange} />
+        <ContactList listToRender={listToRender} onRemoveContact={onRemoveContact} />
+      </div>
+    </Container>
+  );
+  // }
 };
