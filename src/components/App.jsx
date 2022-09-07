@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { nanoid } from 'nanoid'
+import React, { useCallback } from 'react';
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
 import { ContactList } from './ContactList';
@@ -7,38 +6,28 @@ import Container from './Container.js';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-let isFirstTimeAppStarted = true;
+import { useSelector, useDispatch } from "react-redux";
+
+import { addContact, removeContact } from '../redux/reducer-contacts'
+import { setFilter } from '../redux/reducer-filter'
+
 
 export function App() {
-  const [getContacts, setContacts] = useState([]);
-  const [getFilter, setFilter] = useState('')
+  //redux
+  const contacts = useSelector(state => state.items);
+  const filter = useSelector(state => state.filter);
 
-  const LS_KEY = 'contacts';
+  const dispatch = useDispatch();
+
 
   //method for component FIlter
   const filterChange = (event) => {
-    const { name, value } = event.currentTarget
-    setFilter(value);
+    const { value } = event.currentTarget
+    dispatch(setFilter(value));
   }
-
-  //component did mount
-  useEffect(() => {
-    setContacts(getDataFromLS())
-  }, [])
-
-
-  //update LS
-  useEffect(() => {
-    if (isFirstTimeAppStarted) { isFirstTimeAppStarted = false; return };
-
-    updateLS(getContacts);
-  }, [getContacts])
 
   //method for component ContactList
   const getFiltredList = () => {
-    const contacts = getContacts;
-    const filter = getFilter;
-
     if (filter) {
       const subString = filter.toLocaleUpperCase();
       const key = isNaN(+filter.charAt(0)) ? 'name' : 'number'
@@ -55,8 +44,6 @@ export function App() {
 
   //check and add new contact
   const onAddContact = useCallback((newContact) => {
-    const contacts = getContacts;
-
     //check contacts 
     const isExist = Object.keys(newContact).find(key => {
       const subString = newContact[key].toLocaleUpperCase();
@@ -68,37 +55,24 @@ export function App() {
     if (isExist) return true;
 
     //continue
-    newContact.id = nanoid(10)
-    setContacts(preContacts => [...preContacts, newContact]);
-
-    updateLS(getContacts);
-  }, [])
+    dispatch(addContact(newContact));
+  }, [contacts, dispatch])
 
   //remove contact by id, method for component ContactList
   const onRemoveContact = useCallback((id) => {
-    setContacts(preContacts => preContacts.filter(contact => contact.id !== id));
-    updateLS(getContacts);
-  }, [setContacts])
-
-  //use it when add or delete contact
-  const updateLS = (contacts) => {
-    localStorage.setItem(LS_KEY, JSON.stringify(contacts))
-  }
-
-  //us it only for componentDidMount
-  function getDataFromLS() {
-    return JSON.parse(localStorage.getItem(LS_KEY) || '[]')
-  }
+    dispatch(removeContact(id));
+  }, [dispatch])
 
   // render() {
   const listToRender = getFiltredList();
+
   return (
     <Container>
       <div>
         <ContactForm onAddContact={onAddContact} showMessage={showMessage} />
       </div>
       <div>
-        <Filter value={getFilter} onFilterChange={filterChange} />
+        <Filter value={filter} onFilterChange={filterChange} />
         <ContactList listToRender={listToRender} onRemoveContact={onRemoveContact} />
       </div>
     </Container>
