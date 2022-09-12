@@ -1,7 +1,17 @@
 import PropTypes from 'prop-types';
 import { memo } from 'react';
+import { useCallback } from 'react';
 
-const ContactListItem = ({ id, name, number, onRemoveContact }) => {
+import { removeContact } from '../../redux/reducer-contacts'
+import { useDispatch } from "react-redux";
+
+const ContactListItem = ({ id, name, number }) => {
+    const dispatch = useDispatch();
+
+    const onRemoveContact = useCallback((id) => {
+        dispatch(removeContact(id));
+    }, [dispatch])
+
     return <li>
         <span>
             {name}:
@@ -17,7 +27,6 @@ ContactListItem.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     number: PropTypes.string.isRequired,
-    onRemoveContact: PropTypes.func.isRequired,
 };
 
 export default memo(ContactListItem);

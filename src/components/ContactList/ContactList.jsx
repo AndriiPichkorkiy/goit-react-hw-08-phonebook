@@ -1,22 +1,19 @@
-import PropTypes from 'prop-types';
 import ContactListUl from './ContactList.styled';
 import { ContactListItem } from 'components/ContactListItem';
+import { useSelector } from "react-redux";
+import { getFiltredList } from 'redux/selectors';
 
-const ContactList = ({ listToRender, onRemoveContact }) => {
+const ContactList = () => {
+    const contacts = useSelector(getFiltredList);
 
-    const list = listToRender.map(({ id, name, number }) => {
-        return <ContactListItem key={id} id={id} name={name} number={number} onRemoveContact={onRemoveContact} />
+    const markup = contacts.map(({ id, name, number }) => {
+        return <ContactListItem key={id} id={id} name={name} number={number} />
     })
 
     return <ContactListUl>
-        {list}
+        {markup}
     </ContactListUl>
 
 }
-
-ContactList.propTypes = {
-    listToRender: PropTypes.array.isRequired,
-    onRemoveContact: PropTypes.func.isRequired,
-};
 
 export { ContactList };

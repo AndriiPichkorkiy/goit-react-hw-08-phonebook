@@ -2,9 +2,16 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Form from './Form';
 
-export function ContactForm({ onAddContact, showMessage }) {
+import { useSelector, useDispatch } from "react-redux";
+
+import { addContact } from '../../redux/reducer-contacts'
+
+export function ContactForm({ showMessage }) {
     const [getName, setName] = useState('');
     const [getNumber, setNumber] = useState('');
+    //redux
+    const contacts = useSelector(state => state.items);
+    const dispatch = useDispatch();
 
     const handleChange = (event) => {
         const { name, value } = event.currentTarget;
@@ -12,7 +19,7 @@ export function ContactForm({ onAddContact, showMessage }) {
         name === 'name' ? setName(value) : setNumber(value);
     }
 
-    const validateForm = function (event, callBack, showMessage) {
+    const validateForm = function (event, showMessage) {
         event.preventDefault();
         const name = getName
         const number = getNumber
@@ -21,19 +28,28 @@ export function ContactForm({ onAddContact, showMessage }) {
         if (!name || !number) return showMessage('Fill in all filds plz');
 
         //if everything ok - continue
-        const isExist = callBack({ name, number })
-        if (isExist) return
+        const newContact = { name, number };
+        const isExist = Object.keys(newContact).find(key => {
+            const subString = newContact[key].toLocaleUpperCase();
+            const contact = contacts.find(el => el[key].toLocaleUpperCase().includes(subString));
+            if (contact) return !showMessage(`${contact[key]} is already in contacts`);
+            else return false
+        })
+
+        if (isExist) return true;
+
+        //continue
+        dispatch(addContact(newContact));
 
         //reset form
         setName('')
         setNumber('')
     }
 
-    // const { onAddContact, showMessage } = this.props
     return <div>
         <h1>PhoneBook</h1>
 
-        <Form onSubmit={(event) => { validateForm(event, onAddContact, showMessage) }}>
+        <Form onSubmit={(event) => { validateForm(event, showMessage) }}>
             <label htmlFor='name'>
                 Name
             </label>
@@ -72,6 +88,5 @@ export function ContactForm({ onAddContact, showMessage }) {
 }
 
 ContactForm.propTypes = {
-    onAddContact: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
 };
