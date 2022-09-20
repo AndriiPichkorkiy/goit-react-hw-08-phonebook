@@ -6,7 +6,6 @@ import { removeContact } from '../../redux/contacts/contacts-operations'
 import { useDispatch } from "react-redux";
 
 const ContactListItem = ({ id, name, phone }) => {
-    console.log('phone', phone)
     const dispatch = useDispatch();
 
     const onRemoveContact = useCallback((id) => {
