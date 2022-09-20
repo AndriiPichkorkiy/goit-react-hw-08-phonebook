@@ -1,13 +1,26 @@
 import ContactListUl from './ContactList.styled';
 import { ContactListItem } from 'components/ContactListItem';
-import { useSelector } from "react-redux";
-import { getFiltredList } from 'redux/selectors';
+import { useDispatch, useSelector } from "react-redux";
+import { getFiltredList } from 'redux/filter/selectors';
+
+import { getContacts } from 'redux/contacts/contacts-selectors';
+import { useEffect } from 'react';
+import { fetchContacts } from 'redux/contacts/contacts-operations';
+
+
 
 const ContactList = () => {
-    const contacts = useSelector(getFiltredList);
+    // const contacts = useSelector(getFiltredList);
+    const contacts = useSelector(getContacts);
 
-    const markup = contacts.map(({ id, name, number }) => {
-        return <ContactListItem key={id} id={id} name={name} number={number} />
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchContacts());
+    }, [dispatch]);
+
+    const markup = contacts.map(({ id, name, phone }) => {
+        return <ContactListItem key={id} id={id} name={name} phone={phone} />
     })
 
     return <ContactListUl>

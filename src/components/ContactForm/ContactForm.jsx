@@ -4,7 +4,7 @@ import Form from './Form';
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { addContact } from '../../redux/reducer-contacts'
+import { addContact } from '../../redux/contacts/contacts-operations'
 
 export function ContactForm({ showMessage }) {
     const [getName, setName] = useState('');
@@ -28,15 +28,15 @@ export function ContactForm({ showMessage }) {
         if (!name || !number) return showMessage('Fill in all filds plz');
 
         //if everything ok - continue
-        const newContact = { name, number };
-        const isExist = Object.keys(newContact).find(key => {
-            const subString = newContact[key].toLocaleUpperCase();
-            const contact = contacts.find(el => el[key].toLocaleUpperCase().includes(subString));
-            if (contact) return !showMessage(`${contact[key]} is already in contacts`);
-            else return false
-        })
+        const newContact = { name, phone: number };
+        // const isExist = Object.keys(newContact).find(key => {
+        //     const subString = newContact[key].toLocaleUpperCase();
+        //     const contact = contacts.find(el => el[key].toLocaleUpperCase().includes(subString));
+        //     if (contact) return !showMessage(`${contact[key]} is already in contacts`);
+        //     else return false
+        // })
 
-        if (isExist) return true;
+        // if (isExist) return true;
 
         //continue
         dispatch(addContact(newContact));

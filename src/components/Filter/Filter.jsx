@@ -1,8 +1,8 @@
 import FilterBlock from './Filter.styled';
 
 import { useSelector, useDispatch } from "react-redux";
-import { setFilter } from 'redux/reducer-filter'
-import { getFilter } from 'redux/selectors';
+import { setFilter } from 'redux/filter/reducer-filter'
+import { getFilter } from 'redux/filter/selectors';
 
 
 const Filter = function () {
