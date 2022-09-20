@@ -10,8 +10,8 @@ import { fetchContacts } from 'redux/contacts/contacts-operations';
 
 
 const ContactList = () => {
-    // const contacts = useSelector(getFiltredList);
-    const contacts = useSelector(getContacts);
+    const contacts = useSelector(getFiltredList);
+    // const contacts = useSelector(getContacts);
 
     const dispatch = useDispatch();
 
