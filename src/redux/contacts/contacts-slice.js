@@ -55,27 +55,5 @@ export default combineReducers({
   error: errorSlice.reducer,
 })
 
-// const addContact = () => console.log('add')
-// const removeContact = () => console.log('remove')
 
 export { addContact, removeContact }
-// export const { addContact, removeContact } = contactSlice.actions;
-
-
-
-
-
-
-
-
-
-
-  // reducers: {
-  //   addContact: {
-  //     reducer: (store, { payload }) => [...store, payload],
-  //     prepare: contact => ({ payload: { ...contact, id: nanoid(10) } }),
-  //   },
-
-  //   removeContact: (store, { payload }) =>
-  //     store.filter(phoneNumber => phoneNumber.id !== payload),
-  // },
