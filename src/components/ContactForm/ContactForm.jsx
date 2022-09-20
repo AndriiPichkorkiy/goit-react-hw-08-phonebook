@@ -10,7 +10,7 @@ export function ContactForm({ showMessage }) {
     const [getName, setName] = useState('');
     const [getNumber, setNumber] = useState('');
     //redux
-    const contacts = useSelector(state => state.items);
+    // const contacts = useSelector(state => state.items);
     const dispatch = useDispatch();
 
     const handleChange = (event) => {
