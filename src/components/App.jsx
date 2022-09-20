@@ -2,7 +2,7 @@ import React from 'react';
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
 import { ContactList } from './ContactList';
-import Container from './Container.js';
+import { Container, Section } from './Container.js';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
@@ -13,15 +13,15 @@ export function App() {
   }
 
   return (
-    <Container>
-      <div>
+    <Section>
+      <Container>
         <ContactForm showMessage={showMessage} />
-      </div>
-      <div>
+      </Container>
+      <Container>
         <Filter />
         <ContactList />
-      </div>
-    </Container>
+      </Container>
+    </Section>
   );
   // }
 };
