@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkgoit_react_hw_08_phonebook=self.webpackChunkgoit_react_hw_08_phonebook||[]).push([[415],{5415:function(e,o,t){t.r(o);var n=t(184);o.default=function(){return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)("h1",{children:"Wellcome"}),(0,n.jsx)("p",{children:"This application was created to store your contacts in your phone book. After registration, you can add contacts"})]})}}}]);
+//# sourceMappingURL=415.c054be0d.chunk.js.map
