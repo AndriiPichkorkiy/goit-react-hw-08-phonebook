@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 const ButtonStyled = styled.button`
+  margin-right: 16px;
   ${props => {
     switch (props.type) {
       case 'delete':

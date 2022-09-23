@@ -37,12 +37,12 @@ const SignIn = () => {
                     <FormStyled>
                         <InputGroup>
                             <label htmlFor="email">Email: </label>
-                            <Field id="email" type="email" name="email" />
+                            <Field autoComplete="on" id="email" type="email" name="email" />
                             <ErrorMessage name="email" component="div" />
                         </InputGroup>
                         <InputGroup>
                             <label htmlFor="password">Password: </label>
-                            <Field id="password" type="password" name="password" />
+                            <Field autoComplete="off" id="password" type="password" name="password" />
                             <ErrorMessage name="password" component="div" />
                         </InputGroup>
                         <InputGroup>
