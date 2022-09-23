@@ -1,7 +1,7 @@
 export const getFiltredList = ({ contacts: { items: contacts }, filter }) => {
   if (filter) {
     const subString = filter.toLocaleUpperCase();
-    const key = isNaN(+filter.charAt(0)) ? 'name' : 'phone';
+    const key = isNaN(+filter.charAt(0)) ? 'name' : 'number';
     return contacts.filter(el =>
       el[key].toLocaleUpperCase().includes(subString)
     );

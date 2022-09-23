@@ -4,6 +4,7 @@ import {
   fetchContacts,
   addContact,
   removeContact,
+  changeContact,
 } from './contacts-operations';
 
 const contactSlice = createSlice({
@@ -17,6 +18,13 @@ const contactSlice = createSlice({
 
     [removeContact.fulfilled]: (store, { payload }) =>
       store.filter(item => item.id !== payload),
+
+    [changeContact.fulfilled]: (store, { payload }) => {
+      const contact = store.find(item => item.id === payload.id);
+      contact.name = payload.name;
+      contact.number = payload.number;
+      // return [...store];
+    },
   },
 });
 
@@ -35,6 +43,10 @@ const loadingSlice = createSlice({
     [removeContact.pending]: () => true,
     [removeContact.fulfilled]: () => false,
     [removeContact.rejected]: () => false,
+
+    [changeContact.pending]: () => true,
+    [changeContact.fulfilled]: () => false,
+    [changeContact.rejected]: () => false,
   },
 });
 
@@ -50,6 +62,9 @@ const errorSlice = createSlice({
 
     [removeContact.pending]: () => null,
     [removeContact.rejected]: (_, { payload }) => payload,
+
+    [changeContact.pending]: () => null,
+    [changeContact.rejected]: (_, { payload }) => payload,
   },
 });
 

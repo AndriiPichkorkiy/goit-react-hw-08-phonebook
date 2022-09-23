@@ -17,12 +17,12 @@ const ContactList = () => {
         dispatch(fetchContacts());
     }, [dispatch]);
 
-    const markup = contacts.map(({ id, name, phone }) => {
-        return <ContactListItem key={id} id={id} name={name} phone={phone} />
+    const markup = contacts.map(({ id, name, number }) => {
+        return <ContactListItem key={id} id={id} name={name} number={number} />
     })
 
     return <ContactListUl>
-        {markup}
+        {markup.length ? markup : 'Phonebook is empty.'}
     </ContactListUl>
 
 }

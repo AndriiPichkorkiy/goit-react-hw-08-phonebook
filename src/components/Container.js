@@ -7,7 +7,7 @@ const Section = styled.div`
 
 const Container = styled.div`
   padding: 0 2rem;
-  height: 95vh;
+  height: 75vh;
   /* width: 17.5rem; */
 
   background-color: #aaaaaaaa;
