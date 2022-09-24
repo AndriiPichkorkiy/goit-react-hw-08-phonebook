@@ -23,8 +23,8 @@ const SignUp = () => {
                     }
                     if (!values.password) {
                         errors.password = 'Required';
-                    } else if (values.password.length < 6) {
-                        errors.password = 'Length have to be more than 6 symbols';
+                    } else if (values.password.length < 7) {
+                        errors.password = 'Length have to be more than 7 symbols';
                     }
                     return errors;
                 }}
