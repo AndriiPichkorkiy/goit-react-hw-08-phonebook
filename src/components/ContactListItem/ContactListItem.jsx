@@ -53,8 +53,8 @@ const ContactListItem = ({ id, name: propName, number: propNumber }) => {
                     <InputPhoneNumber value={number} onChange={handleChange} />
                     : number}
             </span>
-            <div>{isBeingChanging ? <ButtonStyled type="submit">Finish</ButtonStyled> : <ButtonStyled onClick={onChangeContact} type="sybmit">Change</ButtonStyled>}
-                <ButtonStyled type="delete" onClick={onRemoveContact}>Remove</ButtonStyled>
+            <div>{isBeingChanging ? <ButtonStyled btnType="change" type="submit">Finish</ButtonStyled> : <ButtonStyled btnType="change" onClick={onChangeContact}>Change</ButtonStyled>}
+                <ButtonStyled btnType="delete" onClick={onRemoveContact}>Remove</ButtonStyled>
             </div>
 
         </form >

@@ -39,7 +39,7 @@ export function App() {
             <Route path="sign-in" element={<SignIn />} />
             <Route path="sign-up" element={<SignUp />} />
           </Route>
-          <Route path="*" element={<span>ERROR</span>} />
+          <Route path="*" element={<Navigate to="home"></Navigate>} />
         </Route>
       </Routes>
 
