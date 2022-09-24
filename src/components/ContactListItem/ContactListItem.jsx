@@ -34,13 +34,15 @@ const ContactListItem = ({ id, name: propName, number: propNumber }) => {
 
     const onFinishContact = (e) => {
         e.preventDefault();
+
         setIsBeingChanging(false);
-        const id = e.target.form.dataset.contactid;
+        const id = e.target.dataset.contactid;
         dispatch(changeContact({ id, name, number }));
     }
 
+
     return <li>
-        <form data-contactid={id}>
+        <form data-contactid={id} onSubmit={onFinishContact}>
             <span>
                 {isBeingChanging
                     ? <InputName value={name} onChange={handleChange} />
@@ -51,7 +53,7 @@ const ContactListItem = ({ id, name: propName, number: propNumber }) => {
                     <InputPhoneNumber value={number} onChange={handleChange} />
                     : number}
             </span>
-            <div>{isBeingChanging ? <ButtonStyled onClick={onFinishContact} type="change">Finish</ButtonStyled> : <ButtonStyled onClick={onChangeContact} type="change">Change</ButtonStyled>}
+            <div>{isBeingChanging ? <ButtonStyled type="submit">Finish</ButtonStyled> : <ButtonStyled onClick={onChangeContact} type="sybmit">Change</ButtonStyled>}
                 <ButtonStyled type="delete" onClick={onRemoveContact}>Remove</ButtonStyled>
             </div>
 
